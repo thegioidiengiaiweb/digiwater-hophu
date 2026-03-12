@@ -513,7 +513,6 @@ header.scrolled .nav-link {
 @media (min-width: 1024px) {
   .lg\:w-1\/2.flex.justify-center.items-center.relative.reveal.delay-200.-mt-6.lg\:mt-0.active {
     margin-bottom: 20px;
-    max-height: 40vh;
   }
 }
 
