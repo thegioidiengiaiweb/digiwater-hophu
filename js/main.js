@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Header Scroll Effect
     const header = document.getElementById('header');
 
+// đảm bảo trạng thái ban đầu luôn không có scrolled
+header.classList.remove('scrolled');
+
 const handleHeader = () => {
     if (window.scrollY > 50) {
         header.classList.add('scrolled');
@@ -11,7 +14,7 @@ const handleHeader = () => {
 };
 
 window.addEventListener('scroll', handleHeader);
-handleHeader(); // chạy ngay khi load trang
+handleHeader();
 
     // Mobile Menu Toggle
     const menuToggle = document.getElementById('menu-toggle');
