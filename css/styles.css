@@ -515,3 +515,27 @@ header.scrolled .nav-link {
     margin-bottom: 20px;
   }
 }
+
+
+/*chỉnh cái quy trình*/
+@media (min-width: 1024px) {
+
+.max-w-6xl.mx-auto.relative {
+    top: 45px;
+}
+
+.flex-\[2\].w-full.relative.reveal.delay-150.py-0.lg\:py-8.active {
+    min-width: 390px !important;
+    top: -108px;
+    left: -30px;
+}
+
+.p-5.bg-white.rounded-2xl.border-2.border-sky-100.hover\:border-sky-400.shadow-sm.hover\:shadow-xl.hover\:shadow-sky-50.transition-all.duration-500.group.flex.flex-col.md\:flex-row.items-start.md\:items-center.gap-5.relative.z-10 {
+    top: -12px;
+}
+
+p.text-slate-500.text-sm.leading-relaxed.max-w-xs {
+    margin-bottom: 40px;
+}
+
+}
