@@ -559,3 +559,7 @@ p.text-slate-500.text-sm.leading-relaxed.max-w-xs {
         padding: 0;
     }
 }
+
+.lg\:w-1\/2.flex.justify-center.items-center.relative.reveal.delay-200.-mt-6.lg\:mt-0.active {
+    max-height: 75vh;
+}
