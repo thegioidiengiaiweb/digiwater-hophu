@@ -13,8 +13,10 @@ const handleHeader = () => {
     }
 };
 
-window.addEventListener('scroll', handleHeader);
-handleHeader();
+window.addEventListener('scroll', () => {
+    document.getElementById('header')
+        .classList.toggle('scrolled', window.scrollY > 50);
+});
 
     // Mobile Menu Toggle
     const menuToggle = document.getElementById('menu-toggle');
