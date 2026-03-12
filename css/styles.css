@@ -501,7 +501,7 @@ header.scrolled .nav-link {
     }
 
     .hidden.lg\:block.absolute.top-12.left-0.w-full.h-0\.5.bg-slate-100.-z-10 {
-        padding-bottom: 3px;
+        padding-bottom: 4px;
     }
 
     .p-5.bg-white.rounded-2xl.border-2.border-sky-100.hover\:border-sky-400.shadow-sm.hover\:shadow-xl.hover\:shadow-sky-50.transition-all.duration-500.group.flex.flex-col.md\:flex-row.items-start.md\:items-center.gap-5.relative.z-10 {
