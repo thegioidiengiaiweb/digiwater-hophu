@@ -1,17 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Header Scroll Effect
     const header = document.getElementById('header');
-
-// đảm bảo trạng thái ban đầu luôn không có scrolled
-header.classList.remove('scrolled');
-
-const handleHeader = () => {
-    if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
-    }
-};
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
 
 window.addEventListener('scroll', () => {
     document.getElementById('header')
