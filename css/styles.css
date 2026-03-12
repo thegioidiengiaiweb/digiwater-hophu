@@ -546,3 +546,9 @@ p.text-slate-500.text-sm.leading-relaxed.max-w-xs {
     margin: 0 20px;
   }
 }
+
+@media (max-width: 768px) {
+  .flex-1.w-full.lg\:w-auto.flex.flex-col.items-center.lg\:items-start.reveal.delay-100.active {
+    margin-bottom: -30px;
+  }
+}
