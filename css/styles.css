@@ -577,3 +577,7 @@ p.text-slate-500.text-sm.leading-relaxed.max-w-xs {
 .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3.gap-12.mb-12 {
     padding-left: 60px;
 }
+
+.relative.p-8.md\:p-10.rounded-2xl.border.border-sky-200.bg-sky-50\/30.text-justify.reveal.hover\:shadow-\[0_0_30px_rgba\(14\,165\,233\,0\.2\)\].hover\:border-sky-400.transition-all.duration-500.hover\:-translate-y-1.cursor-default.group.active {
+    padding: 30px 21px 30px 21px;
+}
