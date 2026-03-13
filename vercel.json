@@ -4,9 +4,13 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true },
     { "source": "/about.html", "destination": "/ve-digiwater", "permanent": true },
+    { "source": "/about", "destination": "/ve-digiwater", "permanent": true },
     { "source": "/services.html", "destination": "/dich-vu-xet-nghiem-nuoc-digiwater", "permanent": true },
-    { "source": "/contact.html", "destination": "/lien-he-digiwater", "permanent": true }
+    { "source": "/services", "destination": "/dich-vu-xet-nghiem-nuoc-digiwater", "permanent": true },
+    { "source": "/contact.html", "destination": "/lien-he-digiwater", "permanent": true },
+    { "source": "/contact", "destination": "/lien-he-digiwater", "permanent": true }
   ],
   "rewrites": [
     { "source": "/ve-digiwater", "destination": "/about.html" },
