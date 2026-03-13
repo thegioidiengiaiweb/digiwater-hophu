@@ -2,19 +2,22 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "cleanUrls": true,
-  "redirects": [
-    { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/about.html", "destination": "/ve-digiwater", "permanent": true },
-    { "source": "/about", "destination": "/ve-digiwater", "permanent": true },
-    { "source": "/services.html", "destination": "/dich-vu-xet-nghiem-nuoc-digiwater", "permanent": true },
-    { "source": "/services", "destination": "/dich-vu-xet-nghiem-nuoc-digiwater", "permanent": true },
-    { "source": "/contact.html", "destination": "/lien-he-digiwater", "permanent": true },
-    { "source": "/contact", "destination": "/lien-he-digiwater", "permanent": true }
-  ],
-  "rewrites": [
-    { "source": "/ve-digiwater", "destination": "/about.html" },
-    { "source": "/dich-vu-xet-nghiem-nuoc-digiwater", "destination": "/services.html" },
-    { "source": "/lien-he-digiwater", "destination": "/contact.html" }
+  "routes": [
+    { "src": "/about\\.html", "headers": { "Location": "/ve-digiwater" }, "status": 301 },
+    { "src": "/about", "headers": { "Location": "/ve-digiwater" }, "status": 301 },
+    { "src": "/ve-digiwater", "dest": "/about.html" },
+
+    { "src": "/services\\.html", "headers": { "Location": "/dich-vu-xet-nghiem-nuoc-digiwater" }, "status": 301 },
+    { "src": "/services", "headers": { "Location": "/dich-vu-xet-nghiem-nuoc-digiwater" }, "status": 301 },
+    { "src": "/dich-vu-xet-nghiem-nuoc-digiwater", "dest": "/services.html" },
+
+    { "src": "/contact\\.html", "headers": { "Location": "/lien-he-digiwater" }, "status": 301 },
+    { "src": "/contact", "headers": { "Location": "/lien-he-digiwater" }, "status": 301 },
+    { "src": "/lien-he-digiwater", "dest": "/contact.html" },
+
+    { "src": "/index\\.html", "headers": { "Location": "/" }, "status": 301 },
+
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }
