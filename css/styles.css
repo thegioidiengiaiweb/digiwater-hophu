@@ -561,3 +561,8 @@ p.text-slate-500.text-sm.leading-relaxed.max-w-xs {
     }
 }
 
+@media (min-width: 992px) {
+  .text-center.mb-10.reveal.active {
+    margin-bottom: 65px;
+  }
+}
