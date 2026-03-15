@@ -740,3 +740,10 @@ p.text-slate-500.text-sm.leading-relaxed.max-w-xs {
     margin-top: -1.5px;
   }
 }
+
+
+@media (max-width: 768px) {
+  h2.text-xl.md\:text-5xl.font-bold.text-slate-900.mb-4.md\:mb-8.leading-tight.tracking-tight {
+    font-size: 22px;
+  }
+}
