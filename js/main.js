@@ -2,17 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Header Scroll Effect
     const header = document.getElementById('header');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
+        if (header) {
+            header.classList.toggle('scrolled', window.scrollY > 50);
         }
     });
-
-window.addEventListener('scroll', () => {
-    document.getElementById('header')
-        .classList.toggle('scrolled', window.scrollY > 50);
-});
 
     // Mobile Menu Toggle
     const menuToggle = document.getElementById('menu-toggle');
@@ -63,14 +56,14 @@ window.addEventListener('scroll', () => {
         
         // Reset
         markers.forEach(m => m.classList.remove('active'));
-        regionInfos.forEach(info => info.classList.remove('active'));
+        regionInfos.forEach(info => info.classList.remove('is-active'));
 
         // Activate
         const marker = document.querySelector(`.map-marker.${regionId}`);
         const info = document.getElementById(`info-${regionId}`);
         
         marker?.classList.add('active');
-        info?.classList.add('active');
+        info?.classList.add('is-active');
     };
 
     const startMapRotation = () => {
@@ -299,7 +292,86 @@ window.addEventListener('scroll', () => {
 
     initScientificParticles();
 
-    // Testimonial Slider Logic (Loop back to start)
+    // Mobile Interaction: Scroll to center & Tap toggle
+    const interactiveElementsSelector = '.capability-card, .scientific-card, .dashboard-card, .ecosystem-tgdg, .ecosystem-tglt, .ecosystem-digiwater, .why-card, .glass-card, .region-info, .process-step, .process-card, .group, .ecosystem-block, .ecosystem-card-mobile';
+    const interactiveElements = document.querySelectorAll(interactiveElementsSelector);
+    
+    const handleMobileInteractions = () => {
+        if (window.innerWidth >= 1024) {
+            return;
+        }
+
+        const viewportCenter = window.innerHeight / 2;
+        const sections = new Set();
+        
+        // Refresh elements in case of dynamic content
+        const currentElements = document.querySelectorAll(interactiveElementsSelector);
+        
+        currentElements.forEach(el => {
+            const section = el.closest('section') || el.parentElement;
+            if (section) sections.add(section);
+        });
+
+        sections.forEach(section => {
+            const sectionElements = Array.from(section.querySelectorAll(interactiveElementsSelector));
+            let centeredElement = null;
+            let minDistance = Infinity;
+
+            sectionElements.forEach(el => {
+                // Skip if manually toggled
+                if (el.dataset.manuallyToggled === 'true') return;
+
+                const rect = el.getBoundingClientRect();
+                const elementCenter = rect.top + rect.height / 2;
+                const distance = Math.abs(viewportCenter - elementCenter);
+
+                const isOverlapping = rect.top < viewportCenter && rect.bottom > viewportCenter;
+                if (distance < minDistance && (isOverlapping || distance < window.innerHeight / 3)) {
+                    minDistance = distance;
+                    centeredElement = el;
+                }
+            });
+
+            // Identify active group if centered element belongs to one
+            const activeGroup = centeredElement?.dataset.group;
+
+            sectionElements.forEach(el => {
+                if (el.dataset.manuallyToggled === 'true') return;
+                
+                const isInActiveGroup = activeGroup && el.dataset.group === activeGroup;
+                
+                if (el === centeredElement || isInActiveGroup) {
+                    el.classList.add('is-active');
+                } else {
+                    el.classList.remove('is-active');
+                }
+            });
+        });
+    };
+
+    // Manual Tap Toggle
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth >= 1024) return;
+        
+        const el = e.target.closest(interactiveElementsSelector);
+        if (!el) return;
+
+        // Toggle state and mark as manually controlled
+        const isActive = el.classList.contains('is-active');
+        if (isActive) {
+            el.classList.remove('is-active');
+        } else {
+            el.classList.add('is-active');
+        }
+        el.dataset.manuallyToggled = 'true';
+        handleMobileInteractions();
+    });
+
+    window.addEventListener('scroll', handleMobileInteractions);
+    window.addEventListener('resize', handleMobileInteractions);
+    handleMobileInteractions();
+
+    // Testimonial Slider Logic (Enhanced with Drag/Swipe and 3s Auto-slide)
     const initTestimonialSlider = () => {
         const container = document.querySelector('.testimonial-slider-container');
         const track = document.getElementById('testimonial-track');
@@ -315,6 +387,13 @@ window.addEventListener('scroll', () => {
         let interval;
         let isTransitioning = false;
 
+        // Drag/Swipe variables
+        let isDragging = false;
+        let startX = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+        let animationID = 0;
+
         // Create dots
         if (dotsContainer) {
             dotsContainer.innerHTML = '';
@@ -324,9 +403,8 @@ window.addEventListener('scroll', () => {
                 dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
                 dot.addEventListener('click', () => {
                     if (isTransitioning) return;
-                    isTransitioning = true;
                     currentIndex = i;
-                    updateSlider();
+                    setPositionByIndex();
                     stopAutoSlide();
                     startAutoSlide();
                 });
@@ -334,24 +412,23 @@ window.addEventListener('scroll', () => {
             });
         }
 
-        const updateSlider = (smooth = true) => {
+        const setPositionByIndex = () => {
+            if (!slides.length || !container) return;
             const containerWidth = container.offsetWidth;
-            if (slides.length === 0) return;
             const slideWidth = slides[0].offsetWidth;
+            if (!slideWidth) return;
             
-            if (slideWidth === 0) return;
+            currentTranslate = (containerWidth / 2) - (slideWidth / 2) - (currentIndex * slideWidth);
+            prevTranslate = currentTranslate;
+            setSliderPosition();
+            updateActiveStates();
+        };
 
-            if (smooth) {
-                track.style.transition = 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
-            } else {
-                track.style.transition = 'none';
-            }
+        const setSliderPosition = () => {
+            track.style.transform = `translateX(${currentTranslate}px)`;
+        };
 
-            // Calculate offset to center the current slide
-            const offset = (containerWidth / 2) - (slideWidth / 2) - (currentIndex * slideWidth);
-            track.style.transform = `translateX(${offset}px)`;
-
-            // Update active state
+        const updateActiveStates = () => {
             slides.forEach((slide, index) => {
                 if (index === currentIndex) {
                     slide.classList.add('is-active');
@@ -360,7 +437,6 @@ window.addEventListener('scroll', () => {
                 }
             });
 
-            // Update dots
             if (dotsContainer) {
                 const dots = dotsContainer.children;
                 Array.from(dots).forEach((dot, i) => {
@@ -373,60 +449,104 @@ window.addEventListener('scroll', () => {
                     }
                 });
             }
-            
-            // Allow next transition after current one finishes
-            setTimeout(() => {
-                isTransitioning = false;
-            }, 700);
         };
 
+        const animation = () => {
+            setSliderPosition();
+            if (isDragging) requestAnimationFrame(animation);
+        };
+
+        const touchStart = (index) => {
+            return (event) => {
+                isDragging = true;
+                isPaused = true;
+                startX = getPositionX(event);
+                animationID = requestAnimationFrame(animation);
+                track.style.transition = 'none';
+            };
+        };
+
+        const touchMove = (event) => {
+            if (isDragging) {
+                const currentX = getPositionX(event);
+                const diff = currentX - startX;
+                currentTranslate = prevTranslate + diff;
+            }
+        };
+
+        const touchEnd = () => {
+            isDragging = false;
+            isPaused = false;
+            cancelAnimationFrame(animationID);
+
+            const movedBy = currentTranslate - prevTranslate;
+
+            if (movedBy < -100 && currentIndex < slides.length - 1) currentIndex += 1;
+            if (movedBy > 100 && currentIndex > 0) currentIndex -= 1;
+
+            track.style.transition = 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
+            setPositionByIndex();
+        };
+
+        const getPositionX = (event) => {
+            return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+        };
+
+        // Event Listeners
+        slides.forEach((slide, index) => {
+            const slideImage = slide.querySelector('img');
+            if (slideImage) slideImage.addEventListener('dragstart', (e) => e.preventDefault());
+
+            // Touch events
+            slide.addEventListener('touchstart', touchStart(index));
+            slide.addEventListener('touchend', touchEnd);
+            slide.addEventListener('touchmove', touchMove);
+
+            // Mouse events
+            slide.addEventListener('mousedown', touchStart(index));
+            slide.addEventListener('mouseup', touchEnd);
+            slide.addEventListener('mouseleave', () => {
+                if (isDragging) touchEnd();
+            });
+            slide.addEventListener('mousemove', touchMove);
+
+            // Click to switch slide
+            slide.addEventListener('click', () => {
+                // Only switch if we weren't dragging and it's not the current slide
+                const movedBy = Math.abs(currentTranslate - prevTranslate);
+                if (movedBy < 5 && currentIndex !== index) {
+                    currentIndex = index;
+                    track.style.transition = 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
+                    setPositionByIndex();
+                    stopAutoSlide();
+                    startAutoSlide();
+                }
+            });
+        });
+
         const nextSlide = () => {
-            if (isPaused || isTransitioning) return;
-            isTransitioning = true;
+            if (isPaused || isDragging) return;
             currentIndex = (currentIndex + 1) % slideCount;
-            updateSlider();
+            track.style.transition = 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
+            setPositionByIndex();
         };
 
         const startAutoSlide = () => {
             clearInterval(interval);
-            interval = setInterval(nextSlide, 5000);
+            interval = setInterval(nextSlide, 3000);
         };
 
         const stopAutoSlide = () => {
             clearInterval(interval);
         };
 
-        // Click to center
-        slides.forEach((slide, index) => {
-            slide.style.cursor = 'pointer';
-            slide.addEventListener('click', () => {
-                if (isTransitioning) return;
-                isTransitioning = true;
-                currentIndex = index;
-                updateSlider();
-                stopAutoSlide();
-                startAutoSlide();
-            });
-        });
-
-        // Pause on hover
-        container.addEventListener('mouseenter', () => isPaused = true);
-        container.addEventListener('mouseleave', () => isPaused = false);
-
         // Initial setup
         setTimeout(() => {
-            updateSlider(false);
+            setPositionByIndex();
             startAutoSlide();
         }, 100);
 
-        // Handle resize
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                updateSlider(false);
-            }, 250);
-        });
+        window.addEventListener('resize', setPositionByIndex);
     };
 
     initTestimonialSlider();
@@ -477,4 +597,3 @@ window.addEventListener('scroll', () => {
 
     initWhyDigiWaterRotation();
 });
-
