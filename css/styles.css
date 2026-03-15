@@ -147,8 +147,8 @@ header.scrolled .nav-link {
 .delay-300 { transition-delay: 0.3s; }
 
 /* Cards */
-.capability-card {
-    @apply p-8 bg-slate-50 rounded-3xl border border-slate-100 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:bg-white hover:border-sky-100;
+.capability-card:hover, .capability-card.is-active {
+    @apply -translate-y-2 shadow-xl bg-white border-sky-100;
 }
 
 .icon-box {
@@ -176,7 +176,7 @@ header.scrolled .nav-link {
     transition: all 0.6s;
 }
 
-.scientific-card:hover::before {
+.scientific-card:hover::before, .scientific-card.is-active::before {
     left: 100%;
 }
 
@@ -199,7 +199,7 @@ header.scrolled .nav-link {
     transition: transform 0.3s ease;
 }
 
-.dashboard-card:hover {
+.dashboard-card:hover, .dashboard-card.is-active {
     transform: scale(1.02);
 }
 
@@ -362,8 +362,145 @@ header.scrolled .nav-link {
     transition: all 0.3s ease;
 }
 
-.region-info.active {
+.region-info:hover, .region-info.is-active {
     @apply border-sky-500 bg-sky-50 shadow-md;
+}
+
+/* Process Steps */
+.process-step:hover .w-16, .process-step.is-active .w-16 {
+    @apply border-sky-600 scale-110 shadow-sky-200;
+}
+
+.process-step:hover h4, .process-step.is-active h4 {
+    @apply text-sky-600;
+}
+
+/* Group-based active states for mobile */
+.group.is-active {
+    @apply border-sky-400 shadow-xl;
+}
+
+.ecosystem-card-mobile.is-active:nth-child(1) {
+    @apply border-sky-400 shadow-[0_0_20px_rgba(14,165,233,0.15)];
+}
+
+.ecosystem-card-mobile.is-active:nth-child(2) {
+    @apply border-green-400 shadow-[0_0_20px_rgba(74,222,128,0.15)];
+}
+
+.group.is-active.scientific-card, 
+.group.is-active.capability-card,
+.group.is-active.dashboard-card {
+    @apply !-translate-y-2;
+}
+
+.group.is-active.why-card {
+    @apply !-translate-y-3;
+}
+
+.ecosystem-tgdg.is-active {
+    @apply border-sky-400 shadow-[0_0_30px_rgba(14,165,233,0.2)];
+}
+
+.ecosystem-tglt.is-active {
+    @apply border-green-400 shadow-[0_0_30px_rgba(74,222,128,0.2)];
+}
+
+.ecosystem-digiwater.is-active {
+    @apply scale-105 shadow-[0_0_40px_rgba(14,165,233,0.3)];
+}
+
+.group.is-active.hover\:border-sky-500,
+.is-active.hover\:border-sky-500 {
+    @apply border-sky-500;
+}
+
+.group.is-active.hover\:shadow-lg,
+.is-active.hover\:shadow-lg {
+    @apply shadow-lg;
+}
+
+.group.is-active.hover\:shadow-sky-100,
+.is-active.hover\:shadow-sky-100 {
+    @apply shadow-sky-100;
+}
+
+.group.is-active .group-hover\:scale-110 {
+    @apply scale-110;
+}
+
+.group.is-active .group-hover\:scale-105 {
+    @apply scale-105;
+}
+
+.group.is-active .group-hover\:border-sky-400 {
+    @apply border-sky-400;
+}
+
+.group.is-active .group-hover\:shadow-2xl {
+    @apply shadow-2xl;
+}
+
+.group.is-active .group-hover\:shadow-sky-100 {
+    @apply shadow-sky-100;
+}
+
+.group.is-active .group-hover\:text-sky-600 {
+    @apply text-sky-600;
+}
+
+.group.is-active .group-hover\:bg-sky-500 {
+    @apply bg-sky-500;
+}
+
+.group.is-active .group-hover\:bg-sky-600 {
+    @apply !bg-sky-600;
+}
+
+.group.is-active .group-hover\:text-cyan-500 {
+    @apply !text-cyan-500;
+}
+
+.group.is-active .group-hover\:text-white {
+    @apply !text-white;
+}
+
+.group.is-active .group-hover\:scale-110 {
+    @apply !scale-110;
+}
+
+.group.is-active .group-hover\:scale-150 {
+    @apply scale-150;
+}
+
+.group.is-active .group-hover\:opacity-100 {
+    @apply opacity-100;
+}
+
+.group.is-active .group-hover\:-translate-y-3 {
+    @apply -translate-y-3;
+}
+
+.group.is-active .group-hover\:-translate-y-1 {
+    @apply -translate-y-1;
+}
+
+.group.is-active .group-hover\:shadow-\[0_0_30px_rgba\(14\,165\,233\,0\.2\)\] {
+    @apply shadow-[0_0_30px_rgba(14,165,233,0.2)];
+}
+
+.group.is-active.hover\:shadow-\[0_0_25px_rgba\(14\,165\,233\,0\.2\)\],
+.is-active.hover\:shadow-\[0_0_25px_rgba\(14\,165\,233\,0\.2\)\] {
+    @apply !shadow-[0_0_25px_rgba(14,165,233,0.2)] !border-sky-400;
+    transform: translateY(-8px) !important;
+}
+
+.group.is-active .group-hover\:border-sky-200 {
+    @apply border-sky-200;
+}
+
+.group.is-active .group-hover\:shadow-2xl {
+    @apply shadow-2xl;
 }
 
 /* Ecosystem */
@@ -371,11 +508,11 @@ header.scrolled .nav-link {
     @apply transition-all duration-500 relative;
 }
 
-.ecosystem-tgdg:hover {
+.ecosystem-tgdg:hover, .ecosystem-tgdg.is-active {
     @apply border-sky-400 shadow-xl shadow-sky-400/20;
 }
 
-.ecosystem-tglt:hover {
+.ecosystem-tglt:hover, .ecosystem-tglt.is-active {
     @apply border-green-400 shadow-xl shadow-green-400/20;
 }
 
@@ -394,7 +531,7 @@ header.scrolled .nav-link {
     z-index: 0;
 }
 
-.ecosystem-digiwater:hover::before {
+.ecosystem-digiwater:hover::before, .ecosystem-digiwater.is-active::before {
     opacity: 1;
 }
 
@@ -413,16 +550,16 @@ header.scrolled .nav-link {
     @apply bg-white/40 backdrop-blur-md border border-white/20 rounded-3xl shadow-lg transition-all duration-300;
 }
 
-.glass-card:hover {
+.glass-card:hover, .glass-card.is-active {
     @apply bg-white/60 border-sky-400 shadow-[0_0_30px_rgba(14,165,233,0.3)] -translate-y-1;
 }
 
 .testimonial-slider-container {
-    @apply cursor-grab active:cursor-grabbing;
+    @apply cursor-grab active:cursor-grabbing overflow-hidden;
 }
 
 .testimonial-slide {
-    @apply select-none transition-all duration-500 opacity-40 scale-90;
+    @apply select-none transition-all duration-500 opacity-40 scale-90 cursor-pointer;
 }
 
 .testimonial-slide.is-active {
@@ -479,6 +616,19 @@ header.scrolled .nav-link {
 
 .why-card.is-active .absolute.top-6.right-8 {
     @apply text-sky-50;
+}
+
+/* Disable effects on mobile for specific cards */
+@media (max-width: 1023px) {
+    .no-mobile-effect .group:hover > div,
+    .no-mobile-effect .group.is-active > div {
+        @apply !border-slate-100 !shadow-lg !translate-y-0;
+    }
+    
+    .no-mobile-effect .group:hover img,
+    .no-mobile-effect .group.is-active img {
+        @apply !scale-100;
+    }
 }
 
 ::-webkit-scrollbar-track {
