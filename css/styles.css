@@ -737,6 +737,6 @@ p.text-slate-500.text-sm.leading-relaxed.max-w-xs {
 
 @media (min-width: 1024px) {
   span.hidden.md\:block.text-xs.font-medium.text-slate-500.group-hover\:text-slate-900.tracking-wide.transition-colors {
-    margin-top: -2.1px;
+    margin-top: -1.5px;
   }
 }
